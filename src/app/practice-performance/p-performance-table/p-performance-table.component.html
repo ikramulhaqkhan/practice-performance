@@ -1,0 +1,592 @@
+<div class="default-theme-color">
+  <p-table [value]="data" [tableStyle]="{ 'min-width': '50rem' }" [dataKey]="'id'" selectionMode="single"
+    [(selection)]="selectedData">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 5rem"></th>
+        <th>{{titleName}}</th>
+        <th>{{selectedMonth}}</th>
+        <th>Target 6 Month</th>
+        <th>Deviation (%)</th>
+        <th>Year To Date</th>
+        <th>Trend</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data let-index="rowIndex" let-expanded="expanded">
+      <tr>
+        <td>
+          <button type="button" pButton pRipple [pRowToggler]="data" [pSelectableRow]="data"
+            class="p-button-text p-button-rounded p-button-plain"
+            [icon]=" expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" (click)="toggle(data)"></button>
+        </td>
+        <td>{{ data.revenue }}</td>
+        <td>{{ data.sixMonthAvg | currency }}</td>
+        <td>{{ data.target | currency }}</td>
+        <td [ngClass]="{'text-success': data.variance >= 0, 'text-danger': data.variance < 0}">
+          <ng-container *ngIf="data.variance >= 0">
+            <i class="pi pi-arrow-up"></i>
+          </ng-container>
+          <ng-container *ngIf="data.variance < 0">
+            <i class="pi pi-arrow-down"></i>
+          </ng-container>
+          {{ data.variance }}%
+        </td>
+
+        <td>{{ data.year | currency }}</td>
+        <td>
+          <p-chart type="line" [data]="{ 
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],  
+            datasets: [
+             {
+                label: data.revenue, 
+                backgroundColor: 'rgba(66, 165, 245, 0.2)',
+                borderColor: 'rgba(66, 165, 245, 1)', 
+                data: data.trend, 
+                fill: true, 
+                tension: 0.4, 
+                borderWidth: 1,
+                pointHoverRadius: 0
+                                }]}" [options]="basicOptions" width="60px">
+          </p-chart>
+
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-data>
+      <tr>
+        <td colspan="7">
+          <div class="p-3 chartjs-menu">
+            <!-- Total Billing row start -->
+            <!-- ------------------------------------------------------------------------------------------------------------------- -->
+            <div *ngIf="data.revenue == 'Total Billing'">
+              <p-tabMenu class="custom-menuitem " [model]="items" [activeItem]="menuActiveItem"></p-tabMenu>
+
+              <!-- Total Billing Trend  start-->
+              <div *ngIf="menuActiveItem?.label == 'Trend'" class="mt-2">
+                <div class="card">
+                  <p-chart type="line" [data]="{labels: previousMonth,  
+                  datasets: [                   
+                  {label: 'First Dataset',data: [28, 70, 75, 78, 60, 58, 45, 50, 55, 36, 45, 50],fill: false,borderColor: '#2cb1bc',tension: 0.4},
+                  {label: 'Second Dataset',data: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40],fill: false,borderColor: 'red',tension: 0.4,pointRadius: 0,pointHoverRadius: 0},
+                  ] }" [options]="options" width="100%" height="35vh"></p-chart>
+                </div>
+              </div>
+              <!-- Total Billing Trend  End-->
+
+              <!-- Total Billing Automation Index  start-->
+              <div *ngIf="menuActiveItem?.label == 'Automation Index'">
+                <div class="card mt-2">
+                  <div *ngIf="data.revenue == 'Total Billing'">
+                    <p-tabMenu [model]="automationIndex" [activeItem]="menuAutomationIndexActive"></p-tabMenu>
+                  </div>
+                  <div *ngIf="data.revenue == 'Total Payments'">
+                    <p-tabMenu [model]="totalPaymentAutomation" [activeItem]="totalPaymentAutomationMenu"></p-tabMenu>
+                  </div>
+
+                  <div *ngIf="menuAutomationIndexActive?.label == 'Auto Charges'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Auto Charges',
+                        data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                        fill: false,
+                        borderColor: '#4CAF50',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuAutomationIndexActive?.label == 'User Effort'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'User Effort',
+                        data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                        fill: false,
+                        borderColor: '#FFEB3B',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuAutomationIndexActive?.label == 'Incomplete CLaims'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      {
+                        barThickness: 40,
+                        label: 'Incomplete CLaims',
+                        data: [20, 15, 30, 40, 25, 35, 30, 25, 15, 20, 10, 15],
+                        backgroundColor: '#FF9800', 
+                        fill: false,
+                        borderColor: '#FFEB3B',
+                        tension: 0.4
+                      },
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuAutomationIndexActive?.label == 'Validation Error'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      {
+                        barThickness: 40,
+                        label: 'Validation Error',
+                        data: [20, 15, 30, 40, 25, 35, 30, 25, 15, 20, 10, 15],
+                        backgroundColor: '#F44336', 
+                        fill: false,
+                        borderColor: '#F44336',
+                        tension: 0.4
+                      },
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuAutomationIndexActive?.label == 'Submission Lag Time'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Submission Lag Time',
+                        data: [20, 10, 15, 28, 25, 30, 10, 20, 25, 19, 18, 17],
+                        fill: false,
+                        borderColor: '#03A9F4',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuAutomationIndexActive?.label == 'Time To collect'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Time To collect',
+                        data: [20, 10, 15, 28, 25, 30, 10, 20, 25, 19, 18, 17],
+                        fill: false,
+                        borderColor: '#9C27B0',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                </div>
+              </div>
+              <!-- Total Billing Automation Index  End-->
+
+              <!-- Total Billing Claims Tracking start-->
+              <div *ngIf="menuActiveItem?.label == 'Claims Tracking'" class="mt-2">
+                <div class="card">
+                  <p-tabMenu [model]="claimsTrackingItem" [activeItem]="menuclaimsTrackingActive"></p-tabMenu>
+                  <div *ngIf="menuclaimsTrackingActive?.label == 'Recieved'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Recieved',
+                        data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                        fill: false,
+                        borderColor: '#388E3C',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuclaimsTrackingActive?.label == 'Invalid Files'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Invalid Files',
+                        data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                        fill: false,
+                        borderColor: '#FFC107',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuclaimsTrackingActive?.label == 'Provider Pending'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Provider Pending',
+                        data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                        fill: false,
+                        borderColor: '#FB8C00',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuclaimsTrackingActive?.label == 'Submitted'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Submitted',
+                        data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                        fill: false,
+                        borderColor: '#1976D2',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuclaimsTrackingActive?.label == 'Paid'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Paid',
+                        data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                        fill: false,
+                        borderColor: '#689F38',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuclaimsTrackingActive?.label == 'Denied'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Denied',
+                        data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                        fill: false,
+                        borderColor: '#D32F2F',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuclaimsTrackingActive?.label == 'Patient AR'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Patient AR',
+                        data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                        fill: false,
+                        borderColor: '#E64A19',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                  <div *ngIf="menuclaimsTrackingActive?.label == 'Bad Debits'">
+                    <p-chart type="bar" [data]="{
+                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                    datasets: [
+                      
+                    {
+                        barThickness: 40,
+                        label: 'Bad Debits',
+                        data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                        fill: false,
+                        borderColor: '#6A1B9A',
+                        tension: 0.4
+                    }
+                    ]
+                  }" [options]="chartOptions" width="100%" height="35vh">
+                    </p-chart>
+                  </div>
+                </div>
+              </div>
+              <!-- Total Billing Claims Tracking End-->
+
+            </div>
+            <!-- ------------------------------------------------------------------------------------------------------------------- -->
+            <!-- Total Billing row End -->
+
+            <!-- Total Payment row start -->
+            <!-- ------------------------------------------------------------------------------------------------------------------- -->
+            <div *ngIf="data.revenue == 'Total Payments'">
+              <p-tabMenu class="custom-menuitem " [model]="totalPayementItems"
+                [activeItem]="menutotalPayementItems"></p-tabMenu>
+           
+
+                <!-- Total Payment Trend start -->
+                <div *ngIf="menutotalPayementItems?.label == 'Trend'" class="mt-2">
+                  <div class="card">
+                    <p-chart type="line" [data]="{
+                    labels: previousMonth,  
+                    datasets: [
+                      
+                    {
+                        label: 'Patient',
+                        data: [20, 70, 75, 78, 60, 58, 45, 50, 55, 36, 45, 50],
+                        fill: false,
+                        borderColor: '#2cb1bc',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Insurance',
+                        data: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40],
+                        fill: false,
+                        borderColor: 'red',
+                        tension: 0.4
+              
+                    },
+                    ]
+                  }" [options]="options" width="100%" height="35vh"></p-chart>
+  
+                  </div>
+                </div>
+                <!-- Total Payment Trend  End-->
+  
+                <!-- Total Payment Automation Index  start-->
+                <div *ngIf="menutotalPayementItems?.label == 'Automation Index'">
+                  <div class="card mt-2">
+                      <p-tabMenu [model]="totalPaymentAutomation" [activeItem]="totalPaymentAutomationMenu"></p-tabMenu>
+                    <div *ngIf="totalPaymentAutomationMenu.label == 'Auto Payment'">
+                      <p-chart type="bar" [data]="{
+                      labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                      datasets: [
+                        
+                      {
+                          barThickness: 40,
+                          label: 'Auto Payment',
+                          data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                          fill: false,
+                          borderColor: '#4CAF50',
+                          tension: 0.4
+                      }
+                      ]
+                    }" [options]="chartOptions" width="100%" height="35vh">
+                      </p-chart>
+                    </div>
+                    <div *ngIf="totalPaymentAutomationMenu.label == 'User Effort'">
+                      <p-chart type="bar" [data]="{
+                      labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                      datasets: [
+                        
+                      {
+                          barThickness: 40,
+                          label: 'User Effort',
+                          data: [65, 60, 80, 81, 56, 55, 40, 70, 40, 30, 50, 60],
+                          fill: false,
+                          borderColor: '#FFEB3B',
+                          tension: 0.4
+                      }
+                      ]
+                    }" [options]="chartOptions" width="100%" height="35vh">
+                      </p-chart>
+                    </div>
+                    <div *ngIf="totalPaymentAutomationMenu.label == 'Miss Match'">
+                      <p-chart type="bar" [data]="{
+                      labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                      datasets: [
+                        {
+                          barThickness: 40,
+                          label: 'Miss Match',
+                          data: [20, 15, 30, 40, 25, 35, 30, 25, 15, 20, 10, 15],
+                          backgroundColor: '#FF9800', 
+                          fill: false,
+                          borderColor: '#FFEB3B',
+                          tension: 0.4
+                        },
+                      ]
+                    }" [options]="chartOptions" width="100%" height="35vh">
+                      </p-chart>
+                    </div>
+                    <div *ngIf="totalPaymentAutomationMenu.label == 'Average Processing Time'">
+                      <p-chart type="bar" [data]="{
+                      labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                      datasets: [
+                        {
+                          barThickness: 40,
+                          label: 'Average Processing Time',
+                          data: [20, 15, 30, 40, 25, 35, 30, 25, 15, 20, 10, 15],
+                          backgroundColor: '#F44336', 
+                          fill: false,
+                          borderColor: '#F44336',
+                          tension: 0.4
+                        },
+                      ]
+                    }" [options]="chartOptions" width="100%" height="35vh">
+                      </p-chart>
+                    </div>
+                    <div *ngIf="menuAutomationIndexActive.label == 'Submission Lag Time'">
+                      <p-chart type="bar" [data]="{
+                      labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                      datasets: [
+                        
+                      {
+                          barThickness: 40,
+                          label: 'Submission Lag Time',
+                          data: [20, 10, 15, 28, 25, 30, 10, 20, 25, 19, 18, 17],
+                          fill: false,
+                          borderColor: '#03A9F4',
+                          tension: 0.4
+                      }
+                      ]
+                    }" [options]="chartOptions" width="100%" height="35vh">
+                      </p-chart>
+                    </div>
+                    <div *ngIf="menuAutomationIndexActive.label == 'Time To collect'">
+                      <p-chart type="bar" [data]="{
+                      labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                      datasets: [
+                        
+                      {
+                          barThickness: 40,
+                          label: 'Time To collect',
+                          data: [20, 10, 15, 28, 25, 30, 10, 20, 25, 19, 18, 17],
+                          fill: false,
+                          borderColor: '#9C27B0',
+                          tension: 0.4
+                      }
+                      ]
+                    }" [options]="chartOptions" width="100%" height="35vh">
+                      </p-chart>
+                    </div>
+                  </div>
+                </div>
+                 <!-- Total Payment Automation Index  End-->
+
+              <!-- Total Payment Payer Max start-->
+              <div *ngIf="menutotalPayementItems?.label == 'Payer Max'">
+                <div class="card mt-2">
+                  <p-chart type="bar" [data]="{
+                      labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                      datasets: [
+                        
+                      {
+                          barThickness: 40,
+                          label: 'Payer Max',
+                          data: [30, 10, 15, 28, 25, 30, 10, 20, 25, 19, 18, 17],
+                          fill: false,
+                          borderColor: '#03A9F4',
+                          tension: 0.4
+                      }
+                      ]
+                    }" [options]="chartOptions" width="100%" height="35vh">
+                  </p-chart>
+                </div>
+              </div>
+               <!-- Total Payment Payer Max End-->
+
+              <!-- Total Payment Patient Payment start-->
+              <div *ngIf="menutotalPayementItems?.label == 'Patient Payment'">
+                <div class="card mt-2">
+                <p-tabMenu [model]="totalPatientPayment"
+                [activeItem]="totalPatientPaymentMenu"></p-tabMenu>
+                <div *ngIf="totalPatientPaymentMenu?.label == 'Credit Card'">
+                  <p-chart type="bar" [data]="{
+                                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                                    datasets: [                   
+                                    {
+                                        barThickness: 40,
+                                        label: 'Credit Card',
+                                        data: [15, 10, 15, 28, 20, 30, 10, 20, 25, 19, 18, 17],
+                                        fill: false,
+                                        borderColor: '#03A9F4',
+                                        tension: 0.4
+                                    },               
+                                    ]
+                                  }" [options]="chartOptions" width="100%" height="35vh">
+                  </p-chart>
+                </div>
+                <div *ngIf="totalPatientPaymentMenu?.label == 'Online'">
+                  <p-chart type="bar" [data]="{
+                                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                                    datasets: [                   
+                                    {
+                                        barThickness: 40,
+                                        label: 'Online',
+                                        data: [35, 10, 15, 28, 25, 30, 10, 20, 25, 19, 18, 17],
+                                        fill: false,
+                                        borderColor: '#03A9F4',
+                                        tension: 0.4
+                                    },               
+                                    ]
+                                  }" [options]="chartOptions" width="100%" height="35vh">
+                  </p-chart>
+                </div>
+                <div *ngIf="totalPatientPaymentMenu?.label == 'Third Party Financing'">
+                  <p-chart type="bar" [data]="{
+                                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                                    datasets: [                   
+                                    {
+                                        barThickness: 40,
+                                        label: 'Third Party Financing',
+                                        data: [20, 10, 15, 28, 35, 30, 10, 20, 25, 19, 18, 17],
+                                        fill: false,
+                                        borderColor: '#03A9F4',
+                                        tension: 0.4
+                                    },               
+                                    ]
+                                  }" [options]="chartOptions" width="100%" height="35vh">
+                  </p-chart>
+                </div>
+                <div *ngIf="totalPatientPaymentMenu?.label == 'ACH'">
+                  <p-chart type="bar" [data]="{
+                                    labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025'],  
+                                    datasets: [                   
+                                    {
+                                        barThickness: 40,
+                                        label: 'Automated Clearing House',
+                                        data: [20, 10, 15, 28, 15, 30, 10, 20, 25, 19, 18, 17],
+                                        fill: false,
+                                        borderColor: '#03A9F4',
+                                        tension: 0.4
+                                    },               
+                                    ]
+                                  }" [options]="chartOptions" width="100%" height="35vh">
+                  </p-chart>
+                </div>
+              </div>
+              </div>
+              <!-- Total Payment Patient Payment End-->
+            </div>
+            <!-- ------------------------------------------------------------------------------------------------------------------- -->
+            <!-- Total Payment row End -->
+
+
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+</div>

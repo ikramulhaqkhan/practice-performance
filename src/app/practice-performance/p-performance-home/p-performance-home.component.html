@@ -1,0 +1,43 @@
+<div class="container">
+   <!-- <app-breadcrumb [breadcrumbItems]="breadCrumbItems"></app-breadcrumb> -->
+   <div class="border-top row light portlet shadow mt-3">
+      <div class="col-8">
+         <h4 class="align-content-around m-0">Practice Performance</h4>
+      </div>
+      <div class="col-4">
+         <div class="row">
+            <div class="col-8">
+               <!-- <p-dropdown class="form-control" [options]="[{name: 'MICHIGAN CANTON CARDIOLOGY ASSOCIATES PLLC'}]" optionLabel="name"></p-dropdown> -->
+               <p-multiSelect class="form-control" [options]="groupedPractices" [group]="true" id="practicesMultiSelect" name="practices"
+                  [(ngModel)]="selectedPractices" placeholder="Select Practices" scrollHeight="250px"
+                  [maxSelectedLabels]="1" [selectedItemsLabel]="'{0} items selected'">
+                  <ng-template let-group pTemplate="group">
+                     <div class="flex align-items-center">
+                        <span>{{ group.label }}</span>
+                     </div>
+                  </ng-template>
+               </p-multiSelect>
+            </div>
+            <div class="col-4">
+               <p-calendar [(ngModel)]="date" view="month" dateFormat="MM yy" [readonlyInput]="true" id="practicePerformanceDateField" name="practicePerformanceDate"
+                  (onSelect)="onDateSelect($event)"></p-calendar>
+            </div>
+         </div>
+      </div>
+
+
+   </div>
+   <div class="portlet light">
+      <app-p-performance-table [data]="revenueData" titleName="Revenue" [previousMonth]="previousMonths"
+         [selectedMonth]="selectedMonth"></app-p-performance-table>
+   </div>
+   <div class="portlet light">
+      <app-p-performance-table [data]="accountData" titleName="Accounts Receivable" [previousMonth]="previousMonths"
+         [selectedMonth]="selectedMonth"></app-p-performance-table>
+   </div>
+   <div class="portlet light">
+      <app-p-performance-table [data]="practiceManagementData" titleName="Practice Management"
+         [previousMonth]="previousMonths" [selectedMonth]="selectedMonth"></app-p-performance-table>
+   </div>
+
+</div>

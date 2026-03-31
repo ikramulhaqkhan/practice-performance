@@ -1,0 +1,9 @@
+::ng-deep .custom_breadcrumbs .p-breadcrumb {
+  background: none;
+  border: 0px;
+  border-radius: 0px;
+}
+
+::ng-deep .custom_breadcrumbs .p-breadcrumb ul li .p-menuitem-link:focus {
+  box-shadow: none;
+}

@@ -1,0 +1,58 @@
+<p-dialog header="Add Notes" [(visible)]="showDialog" [modal]="true" [style]="{ width: '50vw' }" [baseZIndex]="99998"
+  [draggable]="false" [resizable]="false" position="top">
+  <div class="mt-1 border-1 p-3">
+    <div class="old-notes">
+      <div>
+        <div class="row border-bottom-1">
+          <div class="col-md-6">
+            <span class="f13">
+              <!-- <fa-icon [icon]="faStickyNote" class="font-yellow"></fa-icon> -->
+              Claim Note (Internal)
+            </span>
+          </div>
+
+          <span class="col-md-6 text-end"><small class="f13 text-muted">
+              AyeshaArshad - 01/02/2023
+            </small></span>
+          <div class="col-md-12">
+            <span class="f13 text-muted">
+              <!-- <fa-icon [icon]="faStickyNote" class="font-blue"></fa-icon> -->
+              <small>
+                \\filesrv\Billing\Charges\2022\HRC\2022\Dec\01022023\12.31.2022pdf\page:
+                3
+              </small>
+            </span>
+          </div>
+          <div class="col-md-12 font-grey-cascade font-italic form-label">
+            <span class="f13 text-muted">
+              <!-- <fa-icon [icon]="faTag" class="text-muted"></fa-icon> -->
+              <small> MCCA28903</small>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-1 mx-1">
+      <textarea class="form-control rounded-0" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <div class="d-flex align-items-end">
+      <div>
+        <select class="btn btn-outline green select ms-1">
+          <option value="" selected>Internal</option>
+          <option value="">External</option>
+        </select>
+      </div>
+
+      <div class="mt-3 d-flex justify-content-end align-items-center w-100">
+        <button class="btn btn-outline green mx-1" (click)="showDialog = false">
+          Save
+        </button>
+        <button class="btn-muted mx-1">Clear</button>
+        <button class="btn-muted mx-1" (click)="showDialog = false">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</p-dialog>

@@ -1,0 +1,12 @@
+.text-success {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .text-danger {
+    color: red;
+    font-weight: bold;
+  }
+  .chartjs-menu .card {
+    border-radius: 0px !important;
+  }

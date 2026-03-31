@@ -1,0 +1,36 @@
+/* Scroll to Top  */
+#progress {
+  position: relative;
+  background-color: #2fbbc8;
+  position: fixed;
+  bottom: 20px;
+  right: 25px;
+  height: 50px;
+  width: 50px;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 10;
+}
+#progress-value {
+  position: absolute;
+  display: block;
+  background-color: white;
+  border-radius: 50%;
+  display: grid;
+  height: calc(100% - 15px);
+  width: calc(100% - 15px);
+  width: 41px;
+  height: 40px;
+  place-items: center;
+  font-size: 56px;
+  color: #001a2e;
+  left: 4px;
+  top: 5px;
+}
+@media only screen and (max-width: 425px) and (min-width: 320px) {
+  #progress {
+    display: none !important;
+  }
+}

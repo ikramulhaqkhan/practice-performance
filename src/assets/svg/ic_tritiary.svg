@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20.965" height="26.672" viewBox="0 0 20.965 26.672">
+  <g id="ic_tritiary" transform="translate(0.3 0.387)">
+    <path id="Path_266" data-name="Path 266" d="M10.147,0c3.8,2.792,7.227,4.112,10.171,3.8.514,12.062-3.326,19.186-10.132,22.159C3.615,23.176-.273,16.359.016,3.617A13.2,13.2,0,0,0,10.147,0Zm0,1.49c3.361,2.471,6.4,3.64,9,3.364.455,10.677-2.944,16.983-8.968,19.614-5.818-2.463-9.259-8.5-9-19.776a11.685,11.685,0,0,0,8.968-3.2Z" transform="translate(-0.001 0)" fill="#035f6c" stroke="#035f6c" stroke-width="0.6" fill-rule="evenodd"/>
+    <text id="T" transform="translate(6.176 16.812)" fill="#035f6c" font-size="14" font-family="OpenSans-ExtraBold, Open Sans" font-weight="800"><tspan x="0" y="0">T</tspan></text>
+  </g>
+</svg>

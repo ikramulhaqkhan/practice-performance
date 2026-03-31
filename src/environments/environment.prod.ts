@@ -1,0 +1,71 @@
+
+export const environment = {
+  production: true,
+  appVersion: require('../../package.json').version,
+  // Local Paths
+  // URL_ARDashboard: 'http://localhost:8292/ARDashboard.aspx',
+  // baseURLNew: 'http://192.168.10.12:8081/api/',
+  // CurrentUserSessionID: 'cc8d4f9c-5481-d52c-8f52-7d58243ce3ce',
+  // ServicePathIntegration: 'http://localhost:7919/',
+  // EligibilityPathIntegration: 'https://appeligibilityapi.altumed.com/api/',
+  // SubmissionApiEndpoint: 'https://autosubmissionapiapp.altumed.com/',
+  // redirectServicePathIntegration: 'http://localhost:8292/',
+  // claimApiURL: 'http://192.168.10.12:8086/api/',
+  // interoperabilityIntegration: 'http://192.168.10.12:8090/',
+  // PaymentAPIEndpoint: 'https://localhost:5001/',
+  // scrubberPath: 'http://dev.epm.com:13604/',
+
+  // QA
+  // URL_ARDashboard: 'https://qalogin.altumed.com/ARDashboard.aspx',
+  // baseURLNew: 'https://qaartrackerapi.altumed.com/api/',
+  // CurrentUserSessionID: 'cc8d4f9c-5481-d52c-8f52-7d58243ce3ce',
+  // ServicePathIntegration: 'https://qasetting.altumed.com/',
+  // EligibilityPathIntegration: 'https://qaeligibilityapi.altumed.com/api/',
+  // EligibilityIntegrationV2: 'https://qaeligibilityapiv2.altumed.com/api/',
+  // EligibilityWebApp: 'https://qaeligibilityv2.altumed.com/',
+  // SubmissionApiEndpoint: 'https://qaautosubmissionapi.altumed.com/',
+  // redirectServicePathIntegration: 'https://qalogin.altumed.com/',
+  // claimApiURL: 'https://qaclaimapi.altumed.com/api/',
+  // interoperabilityIntegration: 'https://qaclaimapi.altumed.com/',
+  // PaymentAPIEndpoint: 'https://qapaymentpostingapi.altumed.com/',
+  // scrubberPath: 'https://qascrubberapi.altumed.com/',
+  // denialAiApiPath: 'https://ai.altumed.com:5000/',
+  // AuthURL: 'https://qacustomerauth.altumed.com/',
+  // JsReportServer: 'https://qareportapi.altumed.com'
+
+  // NLB
+  URL_ARDashboard: 'https://loginapp.altumed.com/ARDashboard.aspx',
+  baseURLNew: 'https://artrackerapiapp.altumed.com/api/',
+  CurrentUserSessionID: 'cc8d4f9c-5481-d52c-8f52-7d58243ce3ce',
+  ServicePathIntegration: 'https://settingapp.altumed.com/',
+  EligibilityPathIntegration: 'https://eligibilityapiapp.altumed.com/api/',
+  EligibilityIntegrationV2: 'https://qaeligibilityapiv2.altumed.com/api/',
+  EligibilityWebApp: 'https://qaeligibilityv2.altumed.com/',
+  SubmissionApiEndpoint: 'https://autosubmissionapiapp.altumed.com/',
+  redirectServicePathIntegration: 'https://loginapp.altumed.com/',
+  claimApiURL: 'https://claimapiapp.altumed.com/api/',
+  interoperabilityIntegration: 'https://claimapiapp.altumed.com/',
+  PaymentAPIEndpoint: 'https://paymentpostingapiapp.altumed.com/',
+  scrubberPath: 'https://scrubberapiapp.altumed.com/',
+  denialAiApiPath: 'https://ai.altumed.com:5000/', 
+  AuthURL: 'https://appcubecaa.altumed.com/',
+  JsReportServer: 'https://reportapp.altumed.com'
+
+  // Prod
+  // RL_ARDashboard: 'https://login.altumed.com/ARDashboard.aspx',
+  // baseURLNew: 'https://artrackerapi.altumed.com/api/',
+  // CurrentUserSessionID: 'cc8d4f9c-5481-d52c-8f52-7d58243ce3ce',
+  // ServicePathIntegration: 'https://setting.altumed.com/',
+  // EligibilityPathIntegration: 'https://eligibilityapi.altumed.com/api/',
+  // EligibilityIntegrationV2: 'https://eligibilityapiv2.altumed.com/api/',
+  // EligibilityWebApp: 'https://eligibilityv2.altumed.com/',
+  // SubmissionApiEndpoint: 'https://autosubmissionapi.altumed.com/',
+  // redirectServicePathIntegration: 'https://login.altumed.com/',
+  // claimApiURL: 'https://claimapi.altumed.com/api/',
+  // interoperabilityIntegration: 'https://integration.altumed.com/',
+  // PaymentAPIEndpoint: 'https://paymentpostingapi.altumed.com/',
+  // scrubberPath: 'https://scrubberapi.altumed.com/',
+  // denialAiApiPath: 'https://ai.altumed.com:5000/',
+  // AuthURL: 'https://customerauth.altumed.com/',
+  // JsReportServer: 'https://reportapi.altumed.com'
+};
